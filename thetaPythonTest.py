@@ -54,7 +54,8 @@ def main():
     sid = startSession() #grab session ID
     takePicture(sid) #still image
 
-main()
+if __name__ == '__main__':
+    main()
 
 # url =  base_url + "commands/execute"
 
