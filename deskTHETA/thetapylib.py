@@ -1,7 +1,4 @@
 import requests, json
-import pprint # for printing out of test data
-from PIL import Image
-from StringIO import StringIO
 
 def request(url_request):
     url_base = "http://192.168.1.1/osc/"
@@ -63,21 +60,3 @@ def stopCapture(sid):
     req = requests.post(url, data=body)
     response = req.json()
     return response
-
-def latestFileUri():
-    state_data = state()["state"]
-    latestFileUri = state_data["_latestFileUri"]
-    return latestFileUri
-
-def getImage(fileUri):
-    url = request("commands/execute")
-    body = json.dumps({"name": "camera.getImage",
-         "parameters": {
-            "fileUri": fileUri,
-            "_type": "thumb"
-         }
-         })
-    req = requests.post(url, data=body)
-    # i = Image.open(StringIO(req.content))
-    with open("test_file.bin", 'wb') as f:
-        f.write(req.content)

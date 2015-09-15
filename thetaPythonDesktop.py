@@ -12,6 +12,7 @@ DARK = (64, 64, 64)
 pygame.init()
 SCREENSIZE = (800, 600)
 SCREEN = pygame.display.set_mode(SCREENSIZE)
+pygame.display.set_caption("THETA S Unofficial Hacking Guide Example")
 
 button = pygame.Rect(100, 120, 140, 80)
 font = pygame.font.Font("fnt/Lato-Thin.ttf", 20)
