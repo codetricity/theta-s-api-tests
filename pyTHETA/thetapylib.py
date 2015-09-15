@@ -74,10 +74,14 @@ def getImage(fileUri):
     body = json.dumps({"name": "camera.getImage",
          "parameters": {
             "fileUri": fileUri,
-            "_type": "thumb"
+#            "_type": "thumb"
+            "_type": "image"
          }
          })
-    req = requests.post(url, data=body)
+    with open('output.jpg', 'wb') as handle:
+        response = requests.post(url, data=body, stream=True)
+        for block in response.iter_content(1024):
+            handle.write(block)
     # i = Image.open(StringIO(req.content))
-    with open("test_file.bin", 'wb') as f:
-        f.write(req.content)
+    # with open("test_file.bin", 'wb') as f:
+    #     f.write(req.content)
