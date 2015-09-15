@@ -11,6 +11,6 @@ library is in the directory `thetapylib`.
 
 The three examples are:
 
-1. Python command line, the most fully developed.
-2. Python desktop example using Pygame library
+1. pyTHETA: Python command line, the most fully developed.
+2. deskTHETA: Python desktop example using Pygame library
 3. Python desktop example using Kivy library
