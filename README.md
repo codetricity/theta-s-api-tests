@@ -7,7 +7,7 @@ For more information, check the [Unofficial and Unauthorized THETA S Hacking
 Guide](http://codetricity.github.io/theta-s/index.html).
 
 There are three programs that use the same sample library.  The main
-library is in the directory `pyTHETA`.
+library is in the directory `thetapylib`.
 
 The three examples are:
 
