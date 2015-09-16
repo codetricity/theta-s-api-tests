@@ -14,20 +14,27 @@ SCREENSIZE = (800, 600)
 SCREEN = pygame.display.set_mode(SCREENSIZE)
 pygame.display.set_caption("THETA S Unofficial Hacking Guide Example")
 
-pictureButton = pygame.Rect(50, 120, 140, 80)
-font = pygame.font.Font("fnt/Lato-Thin.ttf", 20)
+font = pygame.font.Font("fnt/Lato-Bold.ttf", 20)
+
+pictureIcon = pygame.image.load("icon/camera_icon2.png")
+pictureButton = pictureIcon.get_rect(topleft=(50,120))
 pictureButton_text = font.render("Take Picture", True, DARK)
-text_box = (pictureButton.left + 15, pictureButton.top + 23)
+text_box = (pictureButton.left -24, pictureButton.bottom)
 
-captureStartButton = pygame.Rect(200, 120, 140, 80)
+captureStartIcon = pygame.image.load("icon/video.png")
+captureStartButton = captureStartIcon.get_rect(topleft=(200, 120))
 captureStartButton_text = font.render("Take Video", True, DARK)
-captureText_box = (captureStartButton.left + 15, captureStartButton.top + 23)
+captureText_box = (captureStartButton.left - 15, captureStartButton.bottom)
 
-captureStopButton = pygame.Rect(200, 210, 140, 80)
+captureStopIcon = pygame.image.load("icon/stop_icon.png")
+captureStopButton = captureStopIcon.get_rect(topleft=(200, 230))
 captureStopButton_text = font.render("Stop Video", True, DARK)
-captureStopText_box = (captureStopButton.left + 15, captureStopButton.top + 23)
+captureStopText_box = (captureStopButton.left - 15, captureStopButton.bottom)
 
-
+downloadIcon = pygame.image.load("icon/download.png")
+downloadButton = downloadIcon.get_rect(topleft=(50,340))
+downloadButton_text = font.render("Download", True, DARK)
+downloadText_box = (downloadButton.left -15 , downloadButton.bottom)
 
 theta = pygame.image.load("img/ricoh-theta-s.png")
 theta_rect = theta.get_rect()
@@ -53,23 +60,28 @@ while True:
                 startCapture(sid)
             if captureStopButton.collidepoint(mouse_pos):
                 stopCapture(sid)
+            if downloadButton.collidepoint(mouse_pos):
+                fileUri = latestFileUri()
+                getImage(fileUri)
+
 
     SCREEN.fill(WHITE) # blank out screen
 
     # draw take picture button
-    pygame.draw.rect(SCREEN,GRAY, pictureButton)
-    pygame.draw.rect(SCREEN, DARK, pictureButton, 1)
+    SCREEN.blit(pictureIcon, pictureButton)
     SCREEN.blit(pictureButton_text, text_box)
 
     # draw take video button
-    pygame.draw.rect(SCREEN,GRAY, captureStartButton)
-    pygame.draw.rect(SCREEN, DARK, captureStartButton, 1)
     SCREEN.blit(captureStartButton_text, captureText_box)
+    SCREEN.blit(captureStartIcon, captureStartButton)
 
     # draw stop video button
-    pygame.draw.rect(SCREEN,GRAY, captureStopButton)
-    pygame.draw.rect(SCREEN, DARK, captureStopButton, 1)
     SCREEN.blit(captureStopButton_text, captureStopText_box)
+    SCREEN.blit(captureStopIcon, captureStopButton)
+
+    # draw download button
+    SCREEN.blit(downloadButton_text, downloadText_box)
+    SCREEN.blit(downloadIcon, downloadButton)
 
     # decorations
     SCREEN.blit(theta, theta_rect)
