@@ -9,7 +9,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>thetapylib</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/ricoh/Development/viewer/pyTHETA/thetapylib.py">/home/ricoh/Development/viewer/pyTHETA/thetapylib.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/ricoh/Development/viewer/thetapylib.py">/home/ricoh/Development/viewer/thetapylib.py</a></font></td></tr></table>
     <p><tt>Example&nbsp;library&nbsp;for&nbsp;RICOH&nbsp;THETA&nbsp;S&nbsp;hacking&nbsp;with&nbsp;Python.&nbsp;&nbsp;The&nbsp;new<br>
 API&nbsp;is&nbsp;compliant&nbsp;with&nbsp;the&nbsp;Open&nbsp;Spherical&nbsp;Camera&nbsp;specification.<br>
 There&nbsp;are&nbsp;three&nbsp;example&nbsp;programs&nbsp;that&nbsp;use&nbsp;this&nbsp;library.<br>
@@ -47,7 +47,7 @@ At&nbsp;the&nbsp;top&nbsp;of&nbsp;your&nbsp;Python&nbsp;script,&nbsp;use<br>
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-getImage"><strong>getImage</strong></a>(fileUri)</dt><dd><tt>Transfer&nbsp;the&nbsp;file&nbsp;from&nbsp;the&nbsp;camera&nbsp;to&nbsp;computer&nbsp;and&nbsp;save&nbsp;the<br>
+<td width="100%"><dl><dt><a name="-getImage"><strong>getImage</strong></a>(fileUri, imageType<font color="#909090">='image'</font>)</dt><dd><tt>Transfer&nbsp;the&nbsp;file&nbsp;from&nbsp;the&nbsp;camera&nbsp;to&nbsp;computer&nbsp;and&nbsp;save&nbsp;the<br>
 binary&nbsp;data&nbsp;to&nbsp;local&nbsp;storage.&nbsp;&nbsp;This&nbsp;works,&nbsp;but&nbsp;is&nbsp;clunky.<br>
 There&nbsp;are&nbsp;easier&nbsp;ways&nbsp;to&nbsp;do&nbsp;this.&nbsp;The&nbsp;__type&nbsp;parameter<br>
 can&nbsp;be&nbsp;set&nbsp;to&nbsp;"thumb"&nbsp;for&nbsp;a&nbsp;thumbnail&nbsp;or&nbsp;"image"&nbsp;for&nbsp;the<br>
@@ -57,6 +57,16 @@ and&nbsp;not&nbsp;a&nbsp;POST.&nbsp;&nbsp;Most&nbsp;of&nbsp;the&nbsp;calls&nbsp;
  <dl><dt><a name="-latestFileUri"><strong>latestFileUri</strong></a>()</dt><dd><tt>This&nbsp;will&nbsp;only&nbsp;work&nbsp;if&nbsp;you've&nbsp;just&nbsp;taken&nbsp;a&nbsp;picture.&nbsp;&nbsp;The&nbsp;state<br>
 will&nbsp;include&nbsp;the&nbsp;attribute&nbsp;latestFileUri.&nbsp;&nbsp;You&nbsp;need&nbsp;this&nbsp;to<br>
 transfer&nbsp;the&nbsp;file&nbsp;from&nbsp;the&nbsp;camera&nbsp;to&nbsp;your&nbsp;computer&nbsp;or&nbsp;phone.</tt></dd></dl>
+ <dl><dt><a name="-listAll"><strong>listAll</strong></a>(entryCount<font color="#909090">=3</font>, detail<font color="#909090">=False</font>, sortType<font color="#909090">='newest'</font>)</dt><dd><tt>entryCount:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Integer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No.&nbsp;of&nbsp;still&nbsp;images&nbsp;and&nbsp;video&nbsp;files&nbsp;to&nbsp;be&nbsp;acquired<br>
+detail:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Boolean&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Optional)&nbsp;&nbsp;Whether&nbsp;or&nbsp;not&nbsp;file&nbsp;details&nbsp;are&nbsp;acquired<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;true&nbsp;is&nbsp;acquired&nbsp;by&nbsp;default.&nbsp;Only&nbsp;values&nbsp;that&nbsp;can&nbsp;be&nbsp;acquired<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;when&nbsp;false&nbsp;is&nbsp;specified&nbsp;are&nbsp;"name",&nbsp;"uri",&nbsp;"size"&nbsp;and&nbsp;"dateTime"<br>
+sort:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Optional)&nbsp;Specify&nbsp;the&nbsp;sort&nbsp;order<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;newest&nbsp;(dateTime&nbsp;descending&nbsp;order)/&nbsp;oldest&nbsp;(dateTime&nbsp;ascending&nbsp;order)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default&nbsp;is&nbsp;newest</tt></dd></dl>
  <dl><dt><a name="-request"><strong>request</strong></a>(url_request)</dt><dd><tt>Generate&nbsp;the&nbsp;URI&nbsp;to&nbsp;send&nbsp;to&nbsp;the&nbsp;THETA&nbsp;S.&nbsp;&nbsp;The&nbsp;THETA&nbsp;IP&nbsp;address&nbsp;is<br>
 192.168.1.1<br>
 All&nbsp;calls&nbsp;start&nbsp;with&nbsp;/osc/</tt></dd></dl>

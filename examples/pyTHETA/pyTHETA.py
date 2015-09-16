@@ -25,6 +25,7 @@ Available commands:
   stopCapture
   latestFileUri
   getLatestImage
+  listAll NUMBER
 """)
 
         elif sys.argv[1] == "startSession":
@@ -67,8 +68,13 @@ Available commands:
         elif sys.argv[1] == "getLatestImage":
             fileUri = latestFileUri()
             getImage(fileUri)
-
-        #    target = open("test_file.jpg", 'wb')
+        elif sys.argv[1] == "listAll":
+            if len(sys.argv) > 2:
+                listing_all = listAll(int(sys.argv[2]))
+                pprint.pprint(listing_all)
+            else:
+                listing_all = listAll()
+                pprint.pprint(listing_all)
 
 
 if __name__ == '__main__':

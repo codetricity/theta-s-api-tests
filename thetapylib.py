@@ -127,7 +127,7 @@ def latestFileUri():
     latestFileUri = state_data["_latestFileUri"]
     return latestFileUri
 
-def getImage(fileUri):
+def getImage(fileUri, imageType="image"):
     """
     Transfer the file from the camera to computer and save the
     binary data to local storage.  This works, but is clunky.
@@ -139,11 +139,37 @@ def getImage(fileUri):
     body = json.dumps({"name": "camera.getImage",
          "parameters": {
             "fileUri": fileUri,
-#            "_type": "thumb"
-            "_type": "image"
+            "_type": imageType
          }
          })
-    with open('output.jpg', 'wb') as handle:
+    fileName = fileUri.split("/")[1]
+    print(fileName)
+    with open(fileName, 'wb') as handle:
         response = requests.post(url, data=body, stream=True)
         for block in response.iter_content(1024):
             handle.write(block)
+
+def listAll(entryCount = 3, detail = False, sortType = "newest", ):
+    """
+    entryCount:
+            Integer	No. of still images and video files to be acquired
+    detail:
+            Boolean	(Optional)  Whether or not file details are acquired
+            true is acquired by default. Only values that can be acquired
+            when false is specified are "name", "uri", "size" and "dateTime"
+    sort:
+            String	(Optional) Specify the sort order
+            newest (dateTime descending order)/ oldest (dateTime ascending order)
+            Default is newest
+    """
+    url = request("commands/execute")
+    body = json.dumps({"name": "camera._listAll",
+         "parameters": {
+            "entryCount": entryCount,
+            "detail": detail,
+            "sort": sortType
+         }
+         })
+    req = requests.post(url, data=body)
+    response = req.json()
+    return response

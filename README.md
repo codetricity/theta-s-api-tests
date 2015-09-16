@@ -8,8 +8,6 @@ Guide](http://codetricity.github.io/theta-s/index.html).
 
 There are three programs that use the same sample library, `thetapylib`.
 
-[Library documentation](doc/thetapylib.html)
-
 The three examples are:
 
 1. pyTHETA: Python command line, the most fully developed.
