@@ -6,8 +6,9 @@ This is not compatible with the THETA m15 or earlier cameras.
 For more information, check the [Unofficial and Unauthorized THETA S Hacking
 Guide](http://codetricity.github.io/theta-s/index.html).
 
-There are three programs that use the same sample library.  The main
-library is in the directory `thetapylib`.
+There are three programs that use the same sample library, `thetapylib`.
+
+[Library documentation](docs/thetapylib.html)
 
 The three examples are:
 
