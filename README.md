@@ -8,7 +8,7 @@ Guide](http://codetricity.github.io/theta-s/index.html).
 
 There are three programs that use the same sample library, `thetapylib`.
 
-[Library documentation](docs/thetapylib.html)
+[Library documentation](doc/thetapylib.html)
 
 The three examples are:
 
