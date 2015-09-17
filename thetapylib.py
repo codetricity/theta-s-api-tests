@@ -10,7 +10,7 @@ of commands.
 There are three example programs that use this library.
 At the top of your Python script, use
 
-  from thetalib import *
+  from thetapylib import *
 
 After you import the library, you can use the commands like this:
 
@@ -62,9 +62,9 @@ Example use of library from the command line:
 
 """
 import requests, json
-import pprint # for printing out test data
-from PIL import Image
-from StringIO import StringIO
+# import pprint # for printing out test data
+# from PIL import Image
+# from StringIO import StringIO
 
 def request(url_request):
     """
