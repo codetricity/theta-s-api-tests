@@ -1,12 +1,33 @@
 """
 Example library for RICOH THETA S hacking with Python.  The new
 API is compliant with the Open Spherical Camera specification.
+This is intended to show how the THETA S API works.  It is
+not intended for use in your program.  There is no error
+checking and this example library only handles a handful
+of commands.
+
+
 There are three example programs that use this library.
 At the top of your Python script, use
+
   from thetalib import *
 
-  Example use of the library with Pygame to detect the
-  button press.
+After you import the library, you can use the commands like this:
+
+  state()
+
+That will return the state of the camera, which is great to
+get the sessionId.
+
+You can also get the sessionId when you start a new session:
+
+  startSession()
+
+In fact, the startSession() function will return the
+sessionId.
+
+Example use of the library with Pygame to detect the
+button press.
 
           if event.type == pygame.MOUSEBUTTONDOWN:
               mouse_pos = pygame.mouse.get_pos()
@@ -18,9 +39,30 @@ At the top of your Python script, use
                   startCapture(sid)
               if captureStopButton.collidepoint(mouse_pos):
                   stopCapture(sid)
+
+Example use of library from the command line:
+
+        if sys.argv[1] == "startCapture":
+            if len(sys.argv) < 3:
+                print("Usage: pyTHETA.py startCapture SID_000X")
+                print("Use 'state' to get sessionId")
+
+            else:
+                sid = sys.argv[2]
+                response = startCapture(sid)
+                pprint.pprint(response)
+        elif sys.argv[1] == "stopCapture":
+            if len(sys.argv) < 3:
+                print("Usage: pyTHETA.py stopCapture SID_000X")
+                print("Use 'state' to get sessionId")
+            else:
+                sid = sys.argv[2]
+                response = stopCapture(sid)
+                pprint.pprint(response)
+
 """
 import requests, json
-import pprint # for printing out of test data
+import pprint # for printing out test data
 from PIL import Image
 from StringIO import StringIO
 
@@ -52,7 +94,8 @@ def startSession():
 def takePicture(sid):
     """
     Take a still image.  The sessionId is either taken from
-    startSession or from state.
+    startSession or from state.  You can change the mode
+    from video to image with captureMode in the options.
     """
     url = request("commands/execute")
     body = json.dumps({"name": "camera.takePicture",
@@ -105,7 +148,8 @@ def startCapture(sid):
 
 def stopCapture(sid):
     """
-    Stop video capture
+    Stop video capture.  If in image mode, will stop
+    automatic image taking.
     """
     url = request("commands/execute")
     body = json.dumps({"name": "camera._stopCapture",

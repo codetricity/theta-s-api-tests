@@ -12,12 +12,33 @@
 ><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/ricoh/Development/viewer/thetapylib.py">/home/ricoh/Development/viewer/thetapylib.py</a></font></td></tr></table>
     <p><tt>Example&nbsp;library&nbsp;for&nbsp;RICOH&nbsp;THETA&nbsp;S&nbsp;hacking&nbsp;with&nbsp;Python.&nbsp;&nbsp;The&nbsp;new<br>
 API&nbsp;is&nbsp;compliant&nbsp;with&nbsp;the&nbsp;Open&nbsp;Spherical&nbsp;Camera&nbsp;specification.<br>
+This&nbsp;is&nbsp;intended&nbsp;to&nbsp;show&nbsp;how&nbsp;the&nbsp;THETA&nbsp;S&nbsp;API&nbsp;works.&nbsp;&nbsp;It&nbsp;is<br>
+not&nbsp;intended&nbsp;for&nbsp;use&nbsp;in&nbsp;your&nbsp;program.&nbsp;&nbsp;There&nbsp;is&nbsp;no&nbsp;error<br>
+checking&nbsp;and&nbsp;this&nbsp;example&nbsp;library&nbsp;only&nbsp;handles&nbsp;a&nbsp;handful<br>
+of&nbsp;commands.<br>
+&nbsp;<br>
+&nbsp;<br>
 There&nbsp;are&nbsp;three&nbsp;example&nbsp;programs&nbsp;that&nbsp;use&nbsp;this&nbsp;library.<br>
 At&nbsp;the&nbsp;top&nbsp;of&nbsp;your&nbsp;Python&nbsp;script,&nbsp;use<br>
+&nbsp;<br>
 &nbsp;&nbsp;from&nbsp;thetalib&nbsp;import&nbsp;*<br>
 &nbsp;<br>
-&nbsp;&nbsp;Example&nbsp;use&nbsp;of&nbsp;the&nbsp;library&nbsp;with&nbsp;Pygame&nbsp;to&nbsp;detect&nbsp;the<br>
-&nbsp;&nbsp;button&nbsp;press.<br>
+After&nbsp;you&nbsp;import&nbsp;the&nbsp;library,&nbsp;you&nbsp;can&nbsp;use&nbsp;the&nbsp;commands&nbsp;like&nbsp;this:<br>
+&nbsp;<br>
+&nbsp;&nbsp;<a href="#-state">state</a>()<br>
+&nbsp;<br>
+That&nbsp;will&nbsp;return&nbsp;the&nbsp;state&nbsp;of&nbsp;the&nbsp;camera,&nbsp;which&nbsp;is&nbsp;great&nbsp;to<br>
+get&nbsp;the&nbsp;sessionId.<br>
+&nbsp;<br>
+You&nbsp;can&nbsp;also&nbsp;get&nbsp;the&nbsp;sessionId&nbsp;when&nbsp;you&nbsp;start&nbsp;a&nbsp;new&nbsp;session:<br>
+&nbsp;<br>
+&nbsp;&nbsp;<a href="#-startSession">startSession</a>()<br>
+&nbsp;<br>
+In&nbsp;fact,&nbsp;the&nbsp;<a href="#-startSession">startSession</a>()&nbsp;function&nbsp;will&nbsp;return&nbsp;the<br>
+sessionId.<br>
+&nbsp;<br>
+Example&nbsp;use&nbsp;of&nbsp;the&nbsp;library&nbsp;with&nbsp;Pygame&nbsp;to&nbsp;detect&nbsp;the<br>
+button&nbsp;press.<br>
 &nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;event.type&nbsp;==&nbsp;pygame.MOUSEBUTTONDOWN:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mouse_pos&nbsp;=&nbsp;pygame.mouse.get_pos()<br>
@@ -28,7 +49,27 @@ At&nbsp;the&nbsp;top&nbsp;of&nbsp;your&nbsp;Python&nbsp;script,&nbsp;use<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sid&nbsp;=&nbsp;<a href="#-startSession">startSession</a>()<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#-startCapture">startCapture</a>(sid)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;captureStopButton.collidepoint(mouse_pos):<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#-stopCapture">stopCapture</a>(sid)</tt></p>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#-stopCapture">stopCapture</a>(sid)<br>
+&nbsp;<br>
+Example&nbsp;use&nbsp;of&nbsp;library&nbsp;from&nbsp;the&nbsp;command&nbsp;line:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;sys.argv[1]&nbsp;==&nbsp;"startCapture":<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;len(sys.argv)&nbsp;&lt;&nbsp;3:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Usage:&nbsp;pyTHETA.py&nbsp;startCapture&nbsp;SID_000X")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Use&nbsp;'state'&nbsp;to&nbsp;get&nbsp;sessionId")<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sid&nbsp;=&nbsp;sys.argv[2]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;response&nbsp;=&nbsp;<a href="#-startCapture">startCapture</a>(sid)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pprint.pprint(response)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif&nbsp;sys.argv[1]&nbsp;==&nbsp;"stopCapture":<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;len(sys.argv)&nbsp;&lt;&nbsp;3:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Usage:&nbsp;pyTHETA.py&nbsp;stopCapture&nbsp;SID_000X")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Use&nbsp;'state'&nbsp;to&nbsp;get&nbsp;sessionId")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sid&nbsp;=&nbsp;sys.argv[2]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;response&nbsp;=&nbsp;<a href="#-stopCapture">stopCapture</a>(sid)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pprint.pprint(response)</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#aa55cc">
@@ -80,8 +121,10 @@ return&nbsp;it.<br>
 You'll&nbsp;need&nbsp;the&nbsp;sessionId&nbsp;to&nbsp;take&nbsp;a&nbsp;video&nbsp;or&nbsp;image.</tt></dd></dl>
  <dl><dt><a name="-state"><strong>state</strong></a>()</dt><dd><tt>Get&nbsp;the&nbsp;state&nbsp;of&nbsp;the&nbsp;camera,&nbsp;which&nbsp;will&nbsp;include&nbsp;the&nbsp;sessionsId&nbsp;and&nbsp;also&nbsp;the<br>
 latestFileUri&nbsp;if&nbsp;you've&nbsp;just&nbsp;taken&nbsp;a&nbsp;picture.</tt></dd></dl>
- <dl><dt><a name="-stopCapture"><strong>stopCapture</strong></a>(sid)</dt><dd><tt>Stop&nbsp;video&nbsp;capture</tt></dd></dl>
+ <dl><dt><a name="-stopCapture"><strong>stopCapture</strong></a>(sid)</dt><dd><tt>Stop&nbsp;video&nbsp;capture.&nbsp;&nbsp;If&nbsp;in&nbsp;image&nbsp;mode,&nbsp;will&nbsp;stop<br>
+automatic&nbsp;image&nbsp;taking.</tt></dd></dl>
  <dl><dt><a name="-takePicture"><strong>takePicture</strong></a>(sid)</dt><dd><tt>Take&nbsp;a&nbsp;still&nbsp;image.&nbsp;&nbsp;The&nbsp;sessionId&nbsp;is&nbsp;either&nbsp;taken&nbsp;from<br>
-startSession&nbsp;or&nbsp;from&nbsp;state.</tt></dd></dl>
+startSession&nbsp;or&nbsp;from&nbsp;state.&nbsp;&nbsp;You&nbsp;can&nbsp;change&nbsp;the&nbsp;mode<br>
+from&nbsp;video&nbsp;to&nbsp;image&nbsp;with&nbsp;captureMode&nbsp;in&nbsp;the&nbsp;options.</tt></dd></dl>
 </td></tr></table>
 </body></html>
