@@ -11,7 +11,7 @@ DARK = (64, 64, 64)
 
 pygame.init()
 SCREENSIZE = (800, 600)
-SCREEN = pygame.display.set_mode(SCREENSIZE)
+SCREEN = pygame.display.set_mode(SCREENSIZE, pygame.FULLSCREEN)
 pygame.display.set_caption("THETA S Unofficial Hacking Guide Example")
 
 font = pygame.font.Font("fnt/Lato-Bold.ttf", 20)
@@ -50,6 +50,10 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+				pygame.quit()
+				sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if pictureButton.collidepoint(mouse_pos):
@@ -63,6 +67,26 @@ while True:
             if downloadButton.collidepoint(mouse_pos):
                 fileUri = latestFileUri()
                 getImage(fileUri)
+## set up keyboard presses for FLIRC USB controller that
+## maps an remote controller like an Apple controller
+## or any TV remote for easy picture taking.
+## Map the FLICR as follows:
+## p = take picture
+## v = start video capture (or automatic picture if in image mode)
+## s = start video capture or auto-picture
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_p:
+                print("take picture")
+                sid = startSession()
+                takePicture(sid)
+            if event.key == pygame.K_v:
+                print("start video capture")
+                sid = startSession()
+                startCapture(sid)
+            if event.key == pygame.K_s:
+                print("stop video capture")
+                stopCapture(sid)
 
 
     SCREEN.fill(WHITE) # blank out screen

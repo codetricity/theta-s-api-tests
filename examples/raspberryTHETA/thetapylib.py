@@ -114,8 +114,10 @@ def info():
     """
     url = request("info")
     req = requests.get(url)
-    response = req.json()
-    return response
+    return req.json()
+
+
+
 
 def state():
     """
