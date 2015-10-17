@@ -93,8 +93,11 @@ def startSession():
         sid = None
         return sid
 
-    response = req.json()
-    sid = (response["results"]["sessionId"])
+    if req.status_code == "200":
+        response = req.json()
+        sid = (response["results"]["sessionId"])
+    else:
+        sid = None
     return sid
 
 def takePicture(sid):
@@ -116,7 +119,10 @@ def takePicture(sid):
         req = requests.post(url, data=body)
     except requests.exceptions.ConnectionError as e:
         return e
-    response = req.json()
+    if req.status_code == "200":
+        response = req.json()
+    else:
+        respone = "HTTP error"
     return response
 
 def info():
@@ -129,7 +135,11 @@ def info():
         req = requests.get(url)
     except requests.exceptions.ConnectionError as e:
         return e
-    return req.json()
+    if req.status_code == "200":
+        response = req.json()
+    else:
+        response = "HTTP error"
+    return response
 
 
 
@@ -144,7 +154,10 @@ def state():
         req = requests.post(url)
     except requests.exceptions.ConnectionError as e:
         return e
-    response = req.json()
+    if req.status_code == "200":
+        response = req.json()
+    else:
+        response = "HTTP error"
     return response
 
 def startCapture(sid):
@@ -165,7 +178,10 @@ def startCapture(sid):
          req = requests.post(url, data=body)
     except requests.exceptions.ConnectionError as e:
         return e
-    response = req.json()
+    if req.status_code == "200":
+        response = req.json()
+    else:
+        response = "HTTP error"
     return response
 
 
@@ -184,8 +200,10 @@ def stopCapture(sid):
         req = requests.post(url, data=body)
     except requests.exceptions.ConnectionError as e:
         return e
-    response = req.json()
-
+    if req.status_code == "200":
+        response = req.json()
+    else:
+        response = "HTTP error"
     return response
 
 def latestFileUri():
@@ -249,5 +267,8 @@ def listAll(entryCount = 3, detail = False, sortType = "newest", ):
         req = requests.post(url, data=body)
     except requests.exceptions.ConnectionError as e:
         return e
-    response = req.json()
+    if req.status_code == "200":
+        response = req.json()
+    else:
+        response = "HTTP error"
     return response
