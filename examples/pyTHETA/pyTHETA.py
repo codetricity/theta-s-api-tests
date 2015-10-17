@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 import requests, json, pprint
 import sys, io
 from thetapylib import *
@@ -13,16 +15,17 @@ def main():
     # elif len(sys.argv) > 2:
     #     print("\nUse only one argument.")
     else:
-        if sys.argv[1] == "help":
+        help = ["help", "--help", "-h", "-help", "h"]
+        if sys.argv[1] in help:
             print("""
-Help to be written.
+Usage: $ python pyTHETA.py COMMAND
 Available commands:
   startSession
-  takePicture
+  takePicture SID
   info
   state
-  startCapture
-  stopCapture
+  startCapture SID
+  stopCapture SID
   latestFileUri
   getLatestImage
   listAll NUMBER
