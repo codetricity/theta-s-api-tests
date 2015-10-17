@@ -29,6 +29,8 @@ Available commands:
   latestFileUri
   getLatestImage
   listAll NUMBER
+  getMode SID
+  getSid
 """)
 
         elif sys.argv[1] == "startSession":
@@ -42,6 +44,14 @@ Available commands:
                 sid = startSession()
                 response = takePicture(sid)
                 pprint.pprint(response)
+        elif sys.argv[1] == "getMode":
+            sid = sys.argv[2]
+            response = getMode(sid)
+            pprint.pprint(response)
+        elif sys.argv[1] == "getSid":
+            response = getSid()
+            pprint.pprint(response)
+
         elif sys.argv[1] == "info":
             response = info()
             pprint.pprint(response)

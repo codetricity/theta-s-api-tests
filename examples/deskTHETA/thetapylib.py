@@ -161,6 +161,23 @@ def state():
         response = "HTTP error"
     return response
 
+def getSid():
+    """
+    Get the state of the camera, and return the sessionsId.
+    """
+    url = request("state")
+    try:
+        req = requests.post(url)
+    except requests.exceptions.ConnectionError as e:
+        return e
+    if req.status_code == 200:
+        response = req.json()
+        sid = response["state"]["sessionId"]
+    else:
+        sid = "HTTP error"
+    return sid
+
+
 def startCapture(sid):
     """
     Begin video capture if the captureMode is _video.  If the
@@ -220,6 +237,8 @@ def latestFileUri():
     latestFileUri = state_data["_latestFileUri"]
     return latestFileUri
 
+
+
 def getImage(fileUri, imageType="image"):
     """
     Transfer the file from the camera to computer and save the
@@ -242,6 +261,28 @@ def getImage(fileUri, imageType="image"):
             response = requests.post(url, data=body, stream=True)
             for block in response.iter_content(1024):
                 handle.write(block)
+
+def getMode(sid):
+    url = request("commands/execute")
+    body = json.dumps({"name": "camera.getOptions",
+         "parameters": {
+            "sessionId": sid,
+            "optionNames": [
+                    "captureMode"]
+         }
+         })
+    try:
+        req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        return e
+    if req.status_code == 200:
+        response = req.json()
+        mode = response["results"]["options"]["captureMode"]
+    else:
+        mode = "HTTP error"
+    return mode
+
+
 
 def listAll(entryCount = 3, detail = False, sortType = "newest", ):
     """
