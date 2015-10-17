@@ -3,14 +3,7 @@ import requests
 import json
 from thetapylib import *
 import time
-import urllib2
 
-def network_on():
-    try:
-        response=urllib2.urlopen('http://192.168.1.1',timeout=1)
-        return True
-    except urllib2.URLError as err: pass
-    return False
 
 WHITE = (255,255,255)
 GRAY = (230, 230, 230)
@@ -25,6 +18,8 @@ pygame.display.set_caption("THETA S Unofficial Hacking Guide Example")
 
 font = pygame.font.Font("fnt/Lato-Bold.ttf", 20)
 timer_font = pygame.font.Font("fnt/Lato-Bold.ttf", 48)
+clock = pygame.time.Clock()
+FPS = 20
 
 pictureIcon = pygame.image.load("icon/camera_icon2.png")
 pictureButton = pictureIcon.get_rect(topleft=(50,120))
@@ -63,14 +58,9 @@ developers_logo = pygame.image.load("img/theta_developers.png")
 
 sid = "SID_0001"
 delay_on = False
-theta_connected = False
+
 
 while True:
-    # if network_on:
-    #     theta_connected = True
-    # else:
-    #     theta_connected = False
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
