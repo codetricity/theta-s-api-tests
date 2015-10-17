@@ -16,6 +16,9 @@ The three examples are:
 
 ---
 
+Requirements
+------------
+
 The examples use the python `requests` module instead of `urllib2`.  
 To install `requests` do:
 
@@ -23,4 +26,8 @@ To install `requests` do:
 
 Check out the [requests web site](http://docs.python-requests.org/) for 
 more information on installation and usage.
+
+Go to the Pygame site to [download the Pygame binaries](http://pygame.org/download.shtml).
+
+Code was tested with Python 2.7.
 
