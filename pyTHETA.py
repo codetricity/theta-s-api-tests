@@ -31,6 +31,7 @@ Available commands:
   listAll NUMBER
   getMode SID
   getSid
+  setMode SID_000X mode
 """)
 
         elif sys.argv[1] == "startSession":
@@ -48,6 +49,16 @@ Available commands:
             sid = sys.argv[2]
             response = getMode(sid)
             pprint.pprint(response)
+        elif sys.argv[1] == "setMode":
+            if len(sys.argv) < 4:
+                print("Usage: pyTHETA.py setMode SID_000X mode")
+                print("Use pyTHETA.py getSid to get sessionID")
+                print("mode is either image or video")
+            else:
+                sid = sys.argv[2]
+                mode = sys.argv[3]
+                response = setMode(sid, mode)
+                pprint.pprint(response)
         elif sys.argv[1] == "getSid":
             response = getSid()
             pprint.pprint(response)

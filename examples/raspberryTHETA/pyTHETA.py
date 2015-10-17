@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 import requests, json, pprint
 import sys, io
 from thetapylib import *
@@ -13,19 +15,23 @@ def main():
     # elif len(sys.argv) > 2:
     #     print("\nUse only one argument.")
     else:
-        if sys.argv[1] == "help":
+        help = ["help", "--help", "-h", "-help", "h"]
+        if sys.argv[1] in help:
             print("""
-Help to be written.
+Usage: $ python pyTHETA.py COMMAND
 Available commands:
   startSession
-  takePicture
+  takePicture SID
   info
   state
-  startCapture
-  stopCapture
+  startCapture SID
+  stopCapture SID
   latestFileUri
   getLatestImage
   listAll NUMBER
+  getMode SID
+  getSid
+  setMode SID_000X mode
 """)
 
         elif sys.argv[1] == "startSession":
@@ -39,6 +45,24 @@ Available commands:
                 sid = startSession()
                 response = takePicture(sid)
                 pprint.pprint(response)
+        elif sys.argv[1] == "getMode":
+            sid = sys.argv[2]
+            response = getMode(sid)
+            pprint.pprint(response)
+        elif sys.argv[1] == "setMode":
+            if len(sys.argv) < 4:
+                print("Usage: pyTHETA.py setMode SID_000X mode")
+                print("Use pyTHETA.py getSid to get sessionID")
+                print("mode is either image or video")
+            else:
+                sid = sys.argv[2]
+                mode = sys.argv[3]
+                response = setMode(sid, mode)
+                pprint.pprint(response)
+        elif sys.argv[1] == "getSid":
+            response = getSid()
+            pprint.pprint(response)
+
         elif sys.argv[1] == "info":
             response = info()
             pprint.pprint(response)

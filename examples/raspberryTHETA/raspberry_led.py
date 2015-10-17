@@ -76,11 +76,34 @@ developers_logo = pygame.image.load("img/theta_developers.png")
 sid = "SID_0001"
 delay_on = False
 
+max_step = 20
+wait_step = max_step
+# captureMode will either be image or _video
+mode = "image"
+startSession()
+sid = getSid()
+mode = getMode(sid)
+print(mode)
+
 
 while True:
     if LED:
         # power is on
-        GPIO.output(led_01, True)        
+        GPIO.output(led_01, True)       
+        # get camera mode, video or image
+        if mode == "image":
+            GPIO.output(led_02, True)
+            GPIO.output(led_03, False)
+        if mode == "_video":
+            GPIO.output(led_03, True)
+            GPIO.output(led_02, False)
+        if wait_step > 0:
+            wait_step -= 1
+        else:
+            sid = getSid()
+            mode = getMode(sid)
+            wait_step = max_step
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -118,6 +141,7 @@ while True:
 ## v = start video capture (or automatic picture if in image mode)
 ## s = stop video capture or auto-picture
 ## d = delay
+## m = change capture mode
 
         if not delay_on:
             if event.type == pygame.KEYDOWN:
@@ -134,6 +158,10 @@ while True:
                 if event.key == pygame.K_d:
                     start = time.clock()
                     delay_on = True
+                if event.key == pygame.K_m:
+                    # change capture mode
+                    pass
+            
 
     if delay_on:
         elapsed = time.clock() - start

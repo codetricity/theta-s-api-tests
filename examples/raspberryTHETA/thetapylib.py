@@ -125,6 +125,37 @@ def takePicture(sid):
         respone = "HTTP error"
     return response
 
+def setMode(sid, mode):
+    """
+    Change mode between image and _video.  
+    The sessionId is either taken from
+    startSession or from state.  
+    See
+    https://developers.theta360.com/en/docs/v2/api_reference/options/capture_mode.html
+    """
+    if sid == None:
+        response = None
+        return response
+    url = request("commands/execute")
+    body = json.dumps({"name": "camera.setOptions",
+         "parameters": {
+            "sessionId": sid,
+            "options": {
+                    "captureMode": mode,
+                    }
+         }
+         })
+    try:
+        req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        return e
+    if req.status_code == 200:
+        response = req.json()
+    else:
+        respone = "HTTP error"
+    return response
+
+
 def info():
     """
     Get basic information ont he camera.  Note that this is a GET call
