@@ -61,7 +61,8 @@ Example use of library from the command line:
                 pprint.pprint(response)
 
 """
-import requests, json
+import requests
+import json
 # import pprint # for printing out test data
 # from PIL import Image
 # from StringIO import StringIO
@@ -86,7 +87,12 @@ def startSession():
     body = json.dumps({"name": "camera.startSession",
          "parameters": {}
          })
-    req = requests.post(url, data=body)
+    try:
+        req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        sid = None
+        return sid
+
     response = req.json()
     sid = (response["results"]["sessionId"])
     return sid
@@ -97,13 +103,19 @@ def takePicture(sid):
     startSession or from state.  You can change the mode
     from video to image with captureMode in the options.
     """
+    if sid == None:
+        response = None
+        return response
     url = request("commands/execute")
     body = json.dumps({"name": "camera.takePicture",
          "parameters": {
             "sessionId": sid
          }
          })
-    req = requests.post(url, data=body)
+    try:
+        req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        return e
     response = req.json()
     return response
 
@@ -113,9 +125,14 @@ def info():
     and not a POST.  Most of the calls are POST.
     """
     url = request("info")
-    req = requests.get(url)
-    response = req.json()
-    return response
+    try:
+        req = requests.get(url)
+    except requests.exceptions.ConnectionError as e:
+        return e
+    return req.json()
+
+
+
 
 def state():
     """
@@ -123,7 +140,10 @@ def state():
     latestFileUri if you've just taken a picture.
     """
     url = request("state")
-    req = requests.post(url)
+    try:
+        req = requests.post(url)
+    except requests.exceptions.ConnectionError as e:
+        return e
     response = req.json()
     return response
 
@@ -141,7 +161,10 @@ def startCapture(sid):
             "sessionId": sid
          }
          })
-    req = requests.post(url, data=body)
+    try:
+         req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        return e
     response = req.json()
     return response
 
@@ -157,8 +180,12 @@ def stopCapture(sid):
             "sessionId": sid
          }
          })
-    req = requests.post(url, data=body)
+    try:
+        req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        return e
     response = req.json()
+
     return response
 
 def latestFileUri():
@@ -167,7 +194,10 @@ def latestFileUri():
     will include the attribute latestFileUri.  You need this to
     transfer the file from the camera to your computer or phone.
     """
-    state_data = state()["state"]
+    try:
+        state_data = state()["state"]
+    except:
+        return False
     latestFileUri = state_data["_latestFileUri"]
     return latestFileUri
 
@@ -179,19 +209,20 @@ def getImage(fileUri, imageType="image"):
     can be set to "thumb" for a thumbnail or "image" for the
     full-size image.  The default is "image".
     """
-    url = request("commands/execute")
-    body = json.dumps({"name": "camera.getImage",
-         "parameters": {
-            "fileUri": fileUri,
-            "_type": imageType
-         }
-         })
-    fileName = fileUri.split("/")[1]
-    print(fileName)
-    with open(fileName, 'wb') as handle:
-        response = requests.post(url, data=body, stream=True)
-        for block in response.iter_content(1024):
-            handle.write(block)
+    if fileUri:
+        url = request("commands/execute")
+        body = json.dumps({"name": "camera.getImage",
+             "parameters": {
+                "fileUri": fileUri,
+                "_type": imageType
+             }
+             })
+        fileName = fileUri.split("/")[1]
+        print(fileName)
+        with open(fileName, 'wb') as handle:
+            response = requests.post(url, data=body, stream=True)
+            for block in response.iter_content(1024):
+                handle.write(block)
 
 def listAll(entryCount = 3, detail = False, sortType = "newest", ):
     """
@@ -214,6 +245,9 @@ def listAll(entryCount = 3, detail = False, sortType = "newest", ):
             "sort": sortType
          }
          })
-    req = requests.post(url, data=body)
+    try:
+        req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        return e
     response = req.json()
     return response
