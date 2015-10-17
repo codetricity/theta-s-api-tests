@@ -93,7 +93,7 @@ def startSession():
         sid = None
         return sid
 
-    if req.status_code == "200":
+    if req.status_code == 200:
         response = req.json()
         sid = (response["results"]["sessionId"])
     else:
@@ -119,7 +119,7 @@ def takePicture(sid):
         req = requests.post(url, data=body)
     except requests.exceptions.ConnectionError as e:
         return e
-    if req.status_code == "200":
+    if req.status_code == 200:
         response = req.json()
     else:
         respone = "HTTP error"
@@ -135,7 +135,8 @@ def info():
         req = requests.get(url)
     except requests.exceptions.ConnectionError as e:
         return e
-    if req.status_code == "200":
+    print(req.status_code)
+    if req.status_code == 200:
         response = req.json()
     else:
         response = "HTTP error"
@@ -154,7 +155,7 @@ def state():
         req = requests.post(url)
     except requests.exceptions.ConnectionError as e:
         return e
-    if req.status_code == "200":
+    if req.status_code == 200:
         response = req.json()
     else:
         response = "HTTP error"
@@ -178,7 +179,7 @@ def startCapture(sid):
          req = requests.post(url, data=body)
     except requests.exceptions.ConnectionError as e:
         return e
-    if req.status_code == "200":
+    if req.status_code == 200:
         response = req.json()
     else:
         response = "HTTP error"
@@ -200,7 +201,7 @@ def stopCapture(sid):
         req = requests.post(url, data=body)
     except requests.exceptions.ConnectionError as e:
         return e
-    if req.status_code == "200":
+    if req.status_code == 200:
         response = req.json()
     else:
         response = "HTTP error"
@@ -267,7 +268,7 @@ def listAll(entryCount = 3, detail = False, sortType = "newest", ):
         req = requests.post(url, data=body)
     except requests.exceptions.ConnectionError as e:
         return e
-    if req.status_code == "200":
+    if req.status_code == 200:
         response = req.json()
     else:
         response = "HTTP error"
