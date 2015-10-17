@@ -155,4 +155,5 @@ while True:
     SCREEN.blit(theta, theta_rect)
     SCREEN.blit(developers_logo, (10, 10))
 
+    clock.tick(FPS)
     pygame.display.update()
