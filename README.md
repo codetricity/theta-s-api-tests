@@ -13,3 +13,21 @@ The three examples are:
 1. pyTHETA: Python command line, the most fully developed.
 2. deskTHETA: Python desktop example using Pygame library
 3. Python desktop example using Kivy library
+
+---
+
+Requirements
+------------
+
+The examples use the python `requests` module instead of `urllib2`.  
+To install `requests` do:
+
+  $ pip install requests
+
+Check out the [requests web site](http://docs.python-requests.org/) for 
+more information on installation and usage.
+
+Go to the Pygame site to [download the Pygame binaries](http://pygame.org/download.shtml).
+
+Code was tested with Python 2.7.
+
