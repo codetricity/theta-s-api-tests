@@ -61,7 +61,8 @@ Example use of library from the command line:
                 pprint.pprint(response)
 
 """
-import requests, json
+import requests
+import json
 # import pprint # for printing out test data
 # from PIL import Image
 # from StringIO import StringIO
@@ -86,9 +87,17 @@ def startSession():
     body = json.dumps({"name": "camera.startSession",
          "parameters": {}
          })
-    req = requests.post(url, data=body)
-    response = req.json()
-    sid = (response["results"]["sessionId"])
+    try:
+        req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        sid = None
+        return sid
+
+    if req.status_code == 200:
+        response = req.json()
+        sid = (response["results"]["sessionId"])
+    else:
+        sid = None
     return sid
 
 def takePicture(sid):
@@ -97,15 +106,55 @@ def takePicture(sid):
     startSession or from state.  You can change the mode
     from video to image with captureMode in the options.
     """
+    if sid == None:
+        response = None
+        return response
     url = request("commands/execute")
     body = json.dumps({"name": "camera.takePicture",
          "parameters": {
             "sessionId": sid
          }
          })
-    req = requests.post(url, data=body)
-    response = req.json()
+    try:
+        req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        return e
+    if req.status_code == 200:
+        response = req.json()
+    else:
+        response = "HTTP error"
     return response
+
+def setMode(sid, mode):
+    """
+    Change mode between image and _video.
+    The sessionId is either taken from
+    startSession or from state.
+    See
+    https://developers.theta360.com/en/docs/v2/api_reference/options/capture_mode.html
+    """
+    if sid == None:
+        response = None
+        return response
+    url = request("commands/execute")
+    body = json.dumps({"name": "camera.setOptions",
+         "parameters": {
+            "sessionId": sid,
+            "options": {
+                    "captureMode": mode,
+                    }
+         }
+         })
+    try:
+        req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        return e
+    if req.status_code == 200:
+        response = req.json()
+    else:
+        response = "HTTP error"
+    return response
+
 
 def info():
     """
@@ -113,9 +162,19 @@ def info():
     and not a POST.  Most of the calls are POST.
     """
     url = request("info")
-    req = requests.get(url)
-    response = req.json()
+    try:
+        req = requests.get(url)
+    except requests.exceptions.ConnectionError as e:
+        return e
+    print(req.status_code)
+    if req.status_code == 200:
+        response = req.json()
+    else:
+        response = "HTTP error"
     return response
+
+
+
 
 def state():
     """
@@ -123,9 +182,32 @@ def state():
     latestFileUri if you've just taken a picture.
     """
     url = request("state")
-    req = requests.post(url)
-    response = req.json()
+    try:
+        req = requests.post(url)
+    except requests.exceptions.ConnectionError as e:
+        return e
+    if req.status_code == 200:
+        response = req.json()
+    else:
+        response = "HTTP error"
     return response
+
+def getSid():
+    """
+    Get the state of the camera, and return the sessionsId.
+    """
+    url = request("state")
+    try:
+        req = requests.post(url)
+    except requests.exceptions.ConnectionError as e:
+        return e
+    if req.status_code == 200:
+        response = req.json()
+        sid = response["state"]["sessionId"]
+    else:
+        sid = "HTTP error"
+    return sid
+
 
 def startCapture(sid):
     """
@@ -141,8 +223,14 @@ def startCapture(sid):
             "sessionId": sid
          }
          })
-    req = requests.post(url, data=body)
-    response = req.json()
+    try:
+         req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        return e
+    if req.status_code == 200:
+        response = req.json()
+    else:
+        response = "HTTP error"
     return response
 
 
@@ -157,8 +245,14 @@ def stopCapture(sid):
             "sessionId": sid
          }
          })
-    req = requests.post(url, data=body)
-    response = req.json()
+    try:
+        req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        return e
+    if req.status_code == 200:
+        response = req.json()
+    else:
+        response = "HTTP error"
     return response
 
 def latestFileUri():
@@ -167,9 +261,14 @@ def latestFileUri():
     will include the attribute latestFileUri.  You need this to
     transfer the file from the camera to your computer or phone.
     """
-    state_data = state()["state"]
+    try:
+        state_data = state()["state"]
+    except:
+        return False
     latestFileUri = state_data["_latestFileUri"]
     return latestFileUri
+
+
 
 def getImage(fileUri, imageType="image"):
     """
@@ -179,19 +278,42 @@ def getImage(fileUri, imageType="image"):
     can be set to "thumb" for a thumbnail or "image" for the
     full-size image.  The default is "image".
     """
+    if fileUri:
+        url = request("commands/execute")
+        body = json.dumps({"name": "camera.getImage",
+             "parameters": {
+                "fileUri": fileUri,
+                "_type": imageType
+             }
+             })
+        fileName = fileUri.split("/")[1]
+        print(fileName)
+        with open(fileName, 'wb') as handle:
+            response = requests.post(url, data=body, stream=True)
+            for block in response.iter_content(1024):
+                handle.write(block)
+
+def getMode(sid):
     url = request("commands/execute")
-    body = json.dumps({"name": "camera.getImage",
+    body = json.dumps({"name": "camera.getOptions",
          "parameters": {
-            "fileUri": fileUri,
-            "_type": imageType
+            "sessionId": sid,
+            "optionNames": [
+                    "captureMode"]
          }
          })
-    fileName = fileUri.split("/")[1]
-    print(fileName)
-    with open(fileName, 'wb') as handle:
-        response = requests.post(url, data=body, stream=True)
-        for block in response.iter_content(1024):
-            handle.write(block)
+    try:
+        req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        return e
+    if req.status_code == 200:
+        response = req.json()
+        mode = response["results"]["options"]["captureMode"]
+    else:
+        mode = "HTTP error"
+    return mode
+
+
 
 def listAll(entryCount = 3, detail = False, sortType = "newest", ):
     """
@@ -214,6 +336,12 @@ def listAll(entryCount = 3, detail = False, sortType = "newest", ):
             "sort": sortType
          }
          })
-    req = requests.post(url, data=body)
-    response = req.json()
+    try:
+        req = requests.post(url, data=body)
+    except requests.exceptions.ConnectionError as e:
+        return e
+    if req.status_code == 200:
+        response = req.json()
+    else:
+        response = "HTTP error"
     return response

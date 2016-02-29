@@ -122,14 +122,14 @@ def takePicture(sid):
     if req.status_code == 200:
         response = req.json()
     else:
-        respone = "HTTP error"
+        response = "HTTP error"
     return response
 
 def setMode(sid, mode):
     """
-    Change mode between image and _video.  
+    Change mode between image and _video.
     The sessionId is either taken from
-    startSession or from state.  
+    startSession or from state.
     See
     https://developers.theta360.com/en/docs/v2/api_reference/options/capture_mode.html
     """
@@ -152,7 +152,7 @@ def setMode(sid, mode):
     if req.status_code == 200:
         response = req.json()
     else:
-        respone = "HTTP error"
+        response = "HTTP error"
     return response
 
 
