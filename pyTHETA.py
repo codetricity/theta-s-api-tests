@@ -3,10 +3,12 @@
 import requests, json, pprint
 import sys, io
 from thetapylib import *
-from PIL import Image
-import binascii
-from StringIO import StringIO
-import urllib
+# I don't think I use these libraries, but I haven't tested
+# the code after the hackathon.
+# from PIL import Image
+# import binascii
+# from StringIO import StringIO
+# import urllib
 
 def main():
     if len(sys.argv) < 2:
